@@ -53069,7 +53069,7 @@ MA(){this.aG(new A.Xh(this))},
 P(a){var s=null,r=A.at(a).ax,q=r.y2
 r=q==null?r.c:q
 this.a.toString
-q=A.a5p("Flutter Demo Home Page",s)
+q=A.a5p("flutter\u306e\u30c6\u30b9\u30c8\u30da\u30fc\u30b8",s)
 return new A.qo(new A.no(q,r,new A.E1(s,s,1/0,56),s),A.I2(A.aaY(A.a([B.Jt,A.a5p(""+this.d,A.at(a).p2.e)],t.nA),B.o9),s,s),A.a3C(B.y4,!1,this.gMz(),"Increment"),s)}}
 A.Xh.prototype={
 $0(){++this.a.d},
@@ -56662,7 +56662,7 @@ B.Iz=new A.i(!0,B.z,null,"Roboto",B.A,null,null,null,null,null,null,null,null,nu
 B.HY=new A.i(!0,B.m,null,"Roboto",B.A,null,null,null,null,null,null,null,null,null,null,null,null,B.e,null,null,null,"blackHelsinki labelMedium",null,null,null,null)
 B.I7=new A.i(!0,B.m,null,"Roboto",B.A,null,null,null,null,null,null,null,null,null,null,null,null,B.e,null,null,null,"blackHelsinki labelSmall",null,null,null,null)
 B.Js=new A.c_(B.IV,B.G4,B.H2,B.HX,B.I9,B.Fv,B.GC,B.Fz,B.HH,B.Im,B.Hc,B.Io,B.Iz,B.HY,B.I7)
-B.Jt=new A.m0("You have pushed the button this many times:",null,null,null,null)
+B.Jt=new A.m0("\u4f55\u56de\u304b\uff1a",null,null,null,null)
 B.LU=new A.TP(0,"system")
 B.Ju=new A.r1(null)
 B.ei=new A.A7(0,"clamp")
