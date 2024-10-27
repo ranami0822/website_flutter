@@ -1,114 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:website_flutter/timer.dart';
 
-void main() {
+void main(){
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter TODOリスト',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      title: "study" ,
+      home: Scaffold(
+        appBar: AppBar(title: Text("勉強tool"),),
+        body: SelectPage(),
       ),
-      home: TodoListScreen(),
+      
     );
   }
 }
 
-class TodoListScreen extends StatefulWidget {
+class SelectPage extends StatefulWidget {
+  const SelectPage({super.key});
+
   @override
-  _TodoListScreenState createState() => _TodoListScreenState();
+  State<SelectPage> createState() => _SelectPageState();
 }
 
-class _TodoListScreenState extends State<TodoListScreen> {
-  List<TodoItem> _todos = [];
-  TextEditingController _controller = TextEditingController();
-
-  void _addTodo() {
-    setState(() {
-      String todo = _controller.text;
-      if (todo.isNotEmpty) {
-        _todos.add(TodoItem(title: todo));
-        _controller.clear();
-      }
-    });
-  }
-
-  void _removeTodo(int index) {
-    setState(() {
-      _todos.removeAt(index);
-    });
-  }
-
-  void _toggleTodo(int index) {
-    setState(() {
-      _todos[index].isCompleted = !_todos[index].isCompleted;
-    });
-  }
-
+class _SelectPageState extends State<SelectPage> {
+  static var _index = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('TODOリスト'),
-      ),
-      body: Column(
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: '新しいタスクを入力',
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: _addTodo,
-                  child: Text('追加'),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: _todos.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Checkbox(
-                    value: _todos[index].isCompleted,
-                    onChanged: (_) => _toggleTodo(index),
-                  ),
-                  title: Text(
-                    _todos[index].title,
-                    style: TextStyle(
-                      decoration: _todos[index].isCompleted
-                          ? TextDecoration.lineThrough
-                          : null,
-                    ),
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () => _removeTodo(index),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+          ListTile(
+            leading: const Icon(Icons.timer,size: 32,),
+            title: const Text("25分タイマー"),
+            selected: _index==0,
+            onTap:(){
+              _index=0;
+              taptile(0);
+            },
+
+          )
+
+
+      ],),
+
     );
+  }
+  void taptile(int num){
+    const widgetlist = <Widget>[TimerScreen()];
+    setState(() {
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>widgetlist[num]));
+    });
   }
 }
 
-class TodoItem {
-  String title;
-  bool isCompleted;
-
-  TodoItem({required this.title, this.isCompleted = false});
-}
