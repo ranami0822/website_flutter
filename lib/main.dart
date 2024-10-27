@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:website_flutter/timer.dart';
-
 void main(){
   runApp(MyApp());
 }
@@ -54,7 +53,7 @@ class _SelectPageState extends State<SelectPage> {
     );
   }
   void taptile(int num){
-    const widgetlist = <Widget>[TimerScreen()];
+    const widgetlist = <Widget>[MYTIME()];
     setState(() {
       Navigator.push(context, MaterialPageRoute(builder: (context)=>widgetlist[num]));
     });

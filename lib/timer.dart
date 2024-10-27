@@ -1,87 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:cupertino_timer/cupertino_timer.dart';
-
-class TimerScreen extends StatelessWidget {
-  const TimerScreen({super.key});
+import 'dart:async';
+class MYTIME extends StatelessWidget {
+  const MYTIME({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Timer"),),
-      body: TimerScreenBody(),
-    );
+    return Scaffold(body: TimerScreen(),);
   }
 }
-
-class TimerScreenBody extends StatefulWidget {
-  const TimerScreenBody({super.key});
-
+class TimerScreen extends StatefulWidget {
   @override
-  State<TimerScreenBody> createState() => _TimerScreenBodyState();
+  _TimerScreenState createState() => _TimerScreenState();
 }
 
-
-class _TimerScreenBodyState extends State<TimerScreenBody> with TickerProviderStateMixin {
-  late AnimationController controller;
+class _TimerScreenState extends State<TimerScreen> {
+  static const maxSeconds = 25 * 60;  // 25 minutes in seconds
+  int remainingSeconds = maxSeconds;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(vsync: this, duration: const Duration(minutes: 25));
+    startTimer();
+  }
+
+  void startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (remainingSeconds > 0) {
+        setState(() {
+          remainingSeconds--;
+        });
+      } else {
+        _timer?.cancel();
+      }
+    });
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(20),
-            width: 200,
-            height: 200,
-            child: CupertinoTimer(duration: const Duration(minutes: 25)),
-          ),
-          Container(
-            margin: const EdgeInsets.all(20),
-            width: 200,
-            height: 200,
-            child: CupertinoTimer(
-              duration: const Duration(minutes: 25),
-              startOnInit: true,
-              timeStyle: const TextStyle(
-                fontFamily: 'Avenir Next',
-                fontWeight: FontWeight.bold,
-              ),
-              ringColor: Colors.blue,
-              ringStroke: 25,
-              controller: controller,
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              controller.forward();
-            },
-            child: const Text("start"),
-          ),
-          TextButton(
-            onPressed: () {
-              controller.stop();
-            },
-            child: const Text("pause"),
-          ),
-          TextButton(
-            onPressed: () {
-              controller.reset();
-            },
-            child: const Text("reset"),
-          ),
-        ],
+    final minutes = remainingSeconds ~/ 60;
+    final seconds = remainingSeconds % 60;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('25-Minute Timer'),
+      ),
+      body: Center(
+        child: Text(
+          '$minutes:${seconds.toString().padLeft(2, '0')}',
+          style: TextStyle(fontSize: 48),
+        ),
       ),
     );
   }
