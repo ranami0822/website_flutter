@@ -20,41 +20,69 @@ class TimerScreenBody extends StatefulWidget {
   State<TimerScreenBody> createState() => _TimerScreenBodyState();
 }
 
-class _TimerScreenBodyState extends State<TimerScreenBody> with TickerProviderStateMixin{
-  AnimationController? controller;
+
+class _TimerScreenBodyState extends State<TimerScreenBody> with TickerProviderStateMixin {
+  late AnimationController controller;
+
   @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(vsync: this, duration: const Duration(minutes: 25));
+  }
 
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    controller = AnimationController(vsync: this);
     return Center(
-      child: Column(children: [
-        Container(
-          margin: EdgeInsets.all(20),
-          width: 200,
-          height: 200,
-          child: CupertinoTimer(duration: Duration(minutes: 25),),
-
-        ),
-        
-        Container(
-          margin: EdgeInsets.all(20),
-          width: 200,
-          height: 200,
-          child: CupertinoTimer(
-            duration: Duration(minutes: 25),
-            startOnInit: true,
-            timeStyle: TextStyle(fontFamily: 'Avenir Next',fontWeight: FontWeight.bold),
-            ringColor: Colors.blue,
-            ringStroke: 25,
-            controller: this.controller,
-            ), 
-        ),
-        TextButton(onPressed: (){this.controller?.forward();}, child: Text("start")),
-        TextButton(onPressed: (){this.controller?.stop();}, child: Text("pause")),
-        TextButton(onPressed: (){this.controller?.reset();}, child: Text("reset")),
-        
-
-      ],),
-    ) ;
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.all(20),
+            width: 200,
+            height: 200,
+            child: CupertinoTimer(duration: const Duration(minutes: 25)),
+          ),
+          Container(
+            margin: const EdgeInsets.all(20),
+            width: 200,
+            height: 200,
+            child: CupertinoTimer(
+              duration: const Duration(minutes: 25),
+              startOnInit: true,
+              timeStyle: const TextStyle(
+                fontFamily: 'Avenir Next',
+                fontWeight: FontWeight.bold,
+              ),
+              ringColor: Colors.blue,
+              ringStroke: 25,
+              controller: controller,
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              controller.forward();
+            },
+            child: const Text("start"),
+          ),
+          TextButton(
+            onPressed: () {
+              controller.stop();
+            },
+            child: const Text("pause"),
+          ),
+          TextButton(
+            onPressed: () {
+              controller.reset();
+            },
+            child: const Text("reset"),
+          ),
+        ],
+      ),
+    );
   }
 }
