@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:website_flutter/timer.dart';
 import 'package:website_flutter/board.dart';
+import 'package:website_flutter/savet.dart';
 void main(){
   runApp(MyApp());
 }
@@ -50,10 +51,20 @@ class _SelectPageState extends State<SelectPage> {
           ListTile(
             leading: const Icon(Icons.list,size: 32,),
             title: const Text("TODOLIST"),
-            selected: _index==0,
+            selected: _index==1,
             onTap:(){
               _index=1;
               taptile(1);
+            },
+
+          ),
+          ListTile(
+            leading: const Icon(Icons.subject,size: 32,),
+            title: const Text("SAVETIME"),
+            selected: _index==2,
+            onTap:(){
+              _index=2;
+              taptile(2);
             },
 
           )
@@ -64,7 +75,7 @@ class _SelectPageState extends State<SelectPage> {
     );
   }
   void taptile(int num){
-    const widgetlist = <Widget>[MYTIME(),BoardScreen()];
+    const widgetlist = <Widget>[MYTIME(),BoardScreen(),SAVETIME()];
     setState(() {
       Navigator.push(context, MaterialPageRoute(builder: (context)=>widgetlist[num]));
     });
