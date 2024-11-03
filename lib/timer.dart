@@ -1,62 +1,77 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:flutter/material.dart';
+
 class MYTIME extends StatelessWidget {
   const MYTIME({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: TimerScreen(),);
+    return TimerBody();
   }
 }
-class TimerScreen extends StatefulWidget {
+
+class TimerBody extends StatefulWidget {
+  const TimerBody({super.key});
+
   @override
-  _TimerScreenState createState() => _TimerScreenState();
+  State<TimerBody> createState() => _TimerBodyState();
 }
 
-class _TimerScreenState extends State<TimerScreen> {
-  static const maxSeconds = 25 * 60;  // 25 minutes in seconds
-  int remainingSeconds = maxSeconds;
+class _TimerBodyState extends State<TimerBody> {
+  int _timer_text =0;
   Timer? _timer;
+  bool isPaused = false;
 
   @override
-  void initState() {
-    super.initState();
-    startTimer();
+  void dispose(){
+    _timer?.cancel();
+    super.dispose();
+
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("timer"),),
+      body: Center(child: Column(children: [
+        Text("${_timer_text~/60}min,${_timer_text%60}sec",style: TextStyle(fontSize: 32),),
+        TextButton(onPressed: (){isPaused? pauseTime():resume();}, child: Text("${isPaused?"resume ":"start"}")),
+        TextButton(onPressed: ()=>setUpTime(), child: Text("STSTS"))
+      ],),),
+    );
+    
+  }
+  void setUpTime(){
+    setState(() {
+      isPaused=false;
+    });
+    _timer_text=60*25;
+    _timer?.cancel();
+    
+    _timer=Timer.periodic(
+      Duration(seconds: 1), 
+      (Timer time){
+        if(_timer_text>0 && !isPaused)
+        setState(() {
+          _timer_text--;
+        });
+        else if(_timer_text==0 ){
+          time.cancel();
+        }
+        
+      }
+      );
   }
 
-  void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (remainingSeconds > 0) {
-        setState(() {
-          remainingSeconds--;
-        });
-      } else {
-        _timer?.cancel();
-      }
+  void pauseTime(){
+    setState(() {
+      isPaused = false;
     });
   }
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final minutes = remainingSeconds ~/ 60;
-    final seconds = remainingSeconds % 60;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('25-Minute Timer'),
-      ),
-      body: Center(
-        child: Text(
-          '$minutes:${seconds.toString().padLeft(2, '0')}',
-          style: TextStyle(fontSize: 48),
-        ),
-      ),
-    );
+  void resume(){
+    setState(() {
+      isPaused = true;
+    });
   }
 }
